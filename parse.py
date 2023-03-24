@@ -42,10 +42,12 @@ class Plane():
 
         self.distance = np.dot(n, a)
         self.normal = n
+        self.ignored = False
         
 class Brush():
     def __init__(self):
         self.planes = []
+        self.polygons = []
 ignore_materials = ["lightgrid_volume","sky_mp_crash","mantle_on","portal","clip","clip_nosight","hint","portal_nodraw","clip_nosight_nothing","nodraw_decal","clip_nosight_metal","clip_nosight_rock","trigger","mantle_over","clip_player"]
 def parse_map(path):
     #path = "/mnt/f/SteamLibrary/steamapps/common/Call of Duty 2/map_source/cornell.map"
@@ -74,9 +76,11 @@ def parse_map(path):
                 shift = (float(sp[18]), float(sp[19]))
                 rotation = float(sp[20])
                 #print(f'{a} {b} {c} {material} {scale} {shift} {rotation}')
-                #if material in ignore_materials:
+                plane = Plane(a, b, c, material, scale, shift, rotation)
+                if material in ignore_materials:
+                    plane.ignored = True
                 #    ignored = True
-                brush.planes.append(Plane(a, b, c, material, scale, shift, rotation))
+                brush.planes.append(plane)
                 #print(sp)
             elif len(sp[0]) > 1 and sp[0][0] == "\"":
                 if entity != None:
