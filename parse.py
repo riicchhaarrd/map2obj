@@ -33,6 +33,7 @@ class Plane():
         self.points.append(a)
         self.points.append(b)
         self.points.append(c)
+        self.material = material
         
         e1 = b - a
         e2 = c - a
@@ -41,6 +42,9 @@ class Plane():
         n /= np.linalg.norm(n)
 
         self.distance = np.dot(n, a)
+        
+        epsilon = np.random.normal(scale=1e-3, size=3)
+        n += epsilon
         self.normal = n
         self.ignored = False
         
@@ -58,7 +62,7 @@ def parse_map(path):
         entity = None
         brush = None
         ignored = False
-        for l in lines:
+        for lineno, l in enumerate(lines):
             if len(l) == 0:
                 continue
             if l[0] == '/' and l[1] == '/':
@@ -75,7 +79,7 @@ def parse_map(path):
                 scale = (float(sp[16]), float(sp[17]))
                 shift = (float(sp[18]), float(sp[19]))
                 rotation = float(sp[20])
-                #print(f'{a} {b} {c} {material} {scale} {shift} {rotation}')
+                #print(f'{lineno + 1}: {a} {b} {c} {material} {scale} {shift} {rotation}')
                 plane = Plane(a, b, c, material, scale, shift, rotation)
                 if material in ignore_materials:
                     plane.ignored = True
