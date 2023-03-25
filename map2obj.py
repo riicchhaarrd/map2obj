@@ -61,8 +61,10 @@ def build_geom(ent):
 		for p0 in brush.planes: #could optimize loop
 			poly = Polygon()
 			for p1 in brush.planes:
+				if p0 == p1:
+					continue
 				for p2 in brush.planes:
-					if p0 == p1 or p1 == p2 or p2 == p0:
+					if p1 == p2 or p2 == p0:
 						continue
 					P = np.array([
 						[p0.normal[0], p0.normal[1], p0.normal[2]],
@@ -72,7 +74,7 @@ def build_geom(ent):
 					tolerance = 1e-9
 					#tolerance = np.finfo(np.longdouble).eps
 					det = np.linalg.det(P)
-					if abs(det) < tolerance:
+					if abs(det) == 0.0:
 						continue
 					b = np.array([p0.distance, p1.distance, p2.distance])
 					#P * v = -b
