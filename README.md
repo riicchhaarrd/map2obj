@@ -6,7 +6,7 @@ Tested with CoD2/CoD4 map files
 ![1](preview/2.png?raw=true)
 
 # Issues:
-Determinant is zero on some planes so some fix up is required.<br />
+scipy.spatial.ConvexHull doesn't like to sort some faces and I don't know why, so it may bug out sometimes.<br />
 ![1](preview/1.png?raw=true)
 Prefab orientation needs to be fixed<br />
 Patches aren't converted<br />
